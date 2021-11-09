@@ -1,0 +1,46 @@
+name: "Backup Databases"
+description: "Backup databases to S3"
+inputs:
+  DB_USER:
+    description: "Database username"
+    required: true
+    default: ""
+
+  DB_PASSWORD:
+    description: "Database password"
+    required: true
+    default: ""
+
+  DB_HOST:
+    description: "Database host"
+    required: true
+    default: ""
+
+  S3_BUCKET_NAME:
+    description: "S3 bucket name (e.g. database-backups)"
+    required: true
+    default: ""
+
+  S3_FOLDER:
+    description: "S3 folder name (e.g. databases/production)"
+    required: true
+    default: ""
+
+  AWS_ACCESS_KEY_ID:
+    description: "AWS access key"
+    required: true
+    default: ""
+
+  AWS_SECRET_ACCESS_KEY:
+    description: "AWS secret key"
+    required: true
+    default: ""
+
+  AWS_REGION:
+    description: "AWS region (e.g. eu-central-1)"
+    required: true
+    default: ""
+
+runs:
+  using: "node12"
+  main: "index.js"
