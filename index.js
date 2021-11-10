@@ -25,7 +25,7 @@ const fs = require("fs");
     ];
 
     const mysqlDatabases = execSync(
-      `echo "show databases;" | mysql -h "${host}" -u "${username}" -p"${password}"`,
+      `/usr/bin/echo "show databases;" | /usr/bin/mysql -h "${host}" -u "${username}" -p"${password}"`,
       { stdio: "pipe" }
     );
 
@@ -53,7 +53,7 @@ const fs = require("fs");
         const outputFile = path.join(outputDir, filename);
         try {
           execSync(
-            `mysqldump -h "${host}" -u "${username}" -p"${password}" "${database}" > "${outputFile}"`,
+            `/usr/bin/mysqldump -h "${host}" -u "${username}" -p"${password}" "${database}" > "${outputFile}"`,
             { stdio: "pipe" }
           );
           await client.send(

@@ -1,3 +1,3 @@
-#!/bin/sh -l
+#!/usr/bin/env bash
 
 node /index.js
