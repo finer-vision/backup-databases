@@ -1,6 +1,6 @@
 FROM alpine:3.9
 
-RUN apk --update add --no-cache nodejs mysql-client
+RUN apk --update add --no-cache nodejs npm mysql-client
 
 ADD package*.json ./
 ADD index.js index.js
