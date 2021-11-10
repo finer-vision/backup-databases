@@ -69,7 +69,7 @@ function getDatabases(connection) {
         try {
           execSync(
             `mysqldump -h "${host}" -u "${user}" -p"${password}" "${database}" > "${outputFile}"`,
-            { stdio: "pipe" }
+            { stdio: "inherit" }
           );
           await client.send(
             new PutObjectCommand({
