@@ -8,4 +8,4 @@ RUN apk --update add --no-cache bash nodejs npm mysql-client
 RUN npm install
 RUN chmod +x entrypoint.sh
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/bin/bash", "/entrypoint.sh"]
