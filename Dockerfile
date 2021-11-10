@@ -1,5 +1,7 @@
 FROM alpine:3.12
 
+WORKDIR /app
+
 ADD package*.json ./
 ADD index.js index.js
 
