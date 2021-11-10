@@ -1,6 +1,7 @@
 FROM node:12-alpine3.12
 
 COPY package.json /package.json
+COPY package-lock.json /package-lock.json
 COPY index.js /index.js
 COPY entrypoint.sh /entrypoint.sh
 
