@@ -16,6 +16,16 @@ inputs:
     required: true
     default: ""
 
+  DATABASES:
+    description: 'Databases to backup (e.g. ("example_1" "example_2") or () to backup all databases)'
+    required: false
+    default: "()"
+
+  IGNORED_DATABASES:
+    description: 'Databases to ignore (e.g. ("example_3" "example_4") or () to not ignore any databases)'
+    required: false
+    default: "(Database mysql information_schema performance_schema cond_instances)"
+
   S3_BUCKET_NAME:
     description: "S3 bucket name (e.g. database-backups)"
     required: true
@@ -48,6 +58,8 @@ runs:
     DB_USER: ${{ inputs.DB_USER }}
     DB_PASSWORD: ${{ inputs.DB_PASSWORD }}
     DB_HOST: ${{ inputs.DB_HOST }}
+    DATABASES: ${{ inputs.DATABASES }}
+    IGNORED_DATABASES: ${{ inputs.IGNORED_DATABASES }}
     S3_BUCKET_NAME: ${{ inputs.S3_BUCKET_NAME }}
     S3_FOLDER: ${{ inputs.S3_FOLDER }}
     AWS_ACCESS_KEY_ID: ${{ inputs.AWS_ACCESS_KEY_ID }}
