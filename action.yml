@@ -24,7 +24,7 @@ inputs:
   IGNORED_DATABASES:
     description: 'Databases to ignore (e.g. ("example_3" "example_4") or () to not ignore any databases)'
     required: false
-    default: "(Database mysql information_schema performance_schema cond_instances)"
+    default: "(Database mysql information_schema performance_schema cond_instances sys)"
 
   S3_BUCKET_NAME:
     description: "S3 bucket name (e.g. database-backups)"
