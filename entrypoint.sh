@@ -7,6 +7,8 @@ IGNORED_DATABASES=(Database mysql information_schema performance_schema cond_ins
 DATABASE_NAMES=($(echo "show databases;" | mysql -h "$DB_HOST" -p"$DB_PASSWORD" -u "$DB_USER"))
 TMP_DIR=/tmp
 
+aws --version
+
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
