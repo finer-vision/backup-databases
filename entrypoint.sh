@@ -4,7 +4,6 @@ TIME=$(date +%b-%d-%y-%H%M)
 FILENAME="backup-$TIME.tar.gz"
 TMP_DIR=/tmp
 
-# Convert ENV array into bash array
 REPLACE=$(
   cat <<END
 import sys
@@ -17,11 +16,16 @@ for line in sys.stdin:
 END
 )
 
-DATABASE_NAMES=($DATABASES)
-DATABASES_TOTAL=${#DATABASE_NAMES[@]}
+# Convert ENV array into bash array
+DATABASES=$(echo $DATABASES | python -c "$REPLACE")
 
-echo $DATABASES_TOTAL
-exit 0
+DATABASE_NAMES=($DATABASES)
+
+if [[ -z $DATABASES ]]; then
+  DATABASE_NAMES=()
+fi
+
+DATABASES_TOTAL=${#DATABASE_NAMES[@]}
 
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
