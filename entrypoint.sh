@@ -5,20 +5,29 @@ FILENAME="backup-$TIME.tar.gz"
 TMP_DIR=/tmp
 
 # Convert ENV array into bash array
-DATABASES=$(
-  IFS=:
-  printf '%s' "${DATABASES[*]}"
+REPLACE=$(
+  cat <<END
+import sys
+import re
+
+for line in sys.stdin:
+    line = re.sub(r'^\(', '', line)
+    line = re.sub(r'\)$', '', line)
+    sys.stdout.write(line)
+END
 )
-DATABASES_TOTAL=${#DATABASES[@]}
+
+DATABASE_NAMES=($DATABASES)
+DATABASES_TOTAL=${#DATABASE_NAMES[@]}
 
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
 if [[ $DATABASES_TOTAL -eq 0 ]]; then
-  DATABASES=$(echo "show databases;" | mysql -h "$DB_HOST" -p"$DB_PASSWORD" -u "$DB_USER")
+  DATABASE_NAMES=$(echo "show databases;" | mysql -h "$DB_HOST" -p"$DB_PASSWORD" -u "$DB_USER")
 fi
 
-for database in ${DATABASES[@]}; do
+for database in ${DATABASE_NAMES[@]}; do
   if [[ " ${IGNORED_DATABASES[@]} " =~ " ${database} " ]]; then
     printf "$database ignored\n"
   else
