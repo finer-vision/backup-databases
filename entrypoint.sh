@@ -21,6 +21,10 @@ function backupDatabase() {
     printf "Uploading to S3...\n"
     aws s3 cp "$TMP_DIR/$database-$FILENAME" "s3://$S3_BUCKET_NAME/$S3_FOLDER/$database-$FILENAME"
     printf "Uploaded to S3.\n"
+
+    printf "Cleaning up...\n"
+    rm -rf "$TMP_DIR/$database-$FILENAME"
+    printf "Cleaned up.\n"
   fi
 }
 
