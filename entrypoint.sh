@@ -4,7 +4,11 @@ TIME=$(date +%b-%d-%y-%H%M)
 FILENAME="backup-$TIME.tar.gz"
 TMP_DIR=/tmp
 
-DATABASE_NAMES=$DATABASES
+# Convert ENV array into bash array
+DATABASES=$(
+  IFS=:
+  printf '%s' "${DATABASES[*]}"
+)
 DATABASES_TOTAL=${#DATABASES[@]}
 
 aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
@@ -16,21 +20,21 @@ fi
 
 for database in ${DATABASE_NAMES[@]}; do
   if [[ " ${IGNORED_DATABASES[@]} " =~ " ${database} " ]]; then
-      printf "$database ignored\n"
-    else
-      printf "Backing up $database\n"
+    printf "$database ignored\n"
+  else
+    printf "Backing up $database\n"
 
-      set echo off
-      mysqldump -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$database" >"$TMP_DIR/$database.sql"
-      tar -cpzf "$TMP_DIR/$database-$FILENAME" "$TMP_DIR/$database.sql"
-      set echo on
+    set echo off
+    mysqldump -h "$DB_HOST" -u "$DB_USER" -p"$DB_PASSWORD" "$database" >"$TMP_DIR/$database.sql"
+    tar -cpzf "$TMP_DIR/$database-$FILENAME" "$TMP_DIR/$database.sql"
+    set echo on
 
-      printf "Uploading to S3...\n"
-      aws s3 cp "$TMP_DIR/$database-$FILENAME" "s3://$S3_BUCKET_NAME/$S3_FOLDER/$database-$FILENAME"
-      printf "Uploaded to S3.\n"
+    printf "Uploading to S3...\n"
+    aws s3 cp "$TMP_DIR/$database-$FILENAME" "s3://$S3_BUCKET_NAME/$S3_FOLDER/$database-$FILENAME"
+    printf "Uploaded to S3.\n"
 
-      printf "Cleaning up...\n"
-      rm -rf "$TMP_DIR/$database-$FILENAME"
-      printf "Cleaned up.\n"
-    fi
+    printf "Cleaning up...\n"
+    rm -rf "$TMP_DIR/$database-$FILENAME"
+    printf "Cleaned up.\n"
+  fi
 done
