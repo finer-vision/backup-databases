@@ -15,10 +15,10 @@ aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
 aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
 
 if [[ $DATABASES_TOTAL -eq 0 ]]; then
-  DATABASE_NAMES=$(echo "show databases;" | mysql -h "$DB_HOST" -p"$DB_PASSWORD" -u "$DB_USER")
+  DATABASES=$(echo "show databases;" | mysql -h "$DB_HOST" -p"$DB_PASSWORD" -u "$DB_USER")
 fi
 
-for database in ${DATABASE_NAMES[@]}; do
+for database in ${DATABASES[@]}; do
   if [[ " ${IGNORED_DATABASES[@]} " =~ " ${database} " ]]; then
     printf "$database ignored\n"
   else
