@@ -17,8 +17,10 @@ END
 )
 
 # Convert ENV array into bash array
+IGNORED_DATABASES=$(echo $IGNORED_DATABASES | python -c "$REPLACE")
 DATABASES=$(echo $DATABASES | python -c "$REPLACE")
 
+IGNORED_DATABASE_NAMES=($IGNORED_DATABASES)
 DATABASE_NAMES=($DATABASES)
 
 if [[ -z $DATABASES ]]; then
@@ -35,7 +37,7 @@ if [[ $DATABASES_TOTAL -eq 0 ]]; then
 fi
 
 for database in ${DATABASE_NAMES[@]}; do
-  if [[ " ${IGNORED_DATABASES[@]} " =~ " ${database} " ]]; then
+  if [[ " ${IGNORED_DATABASE_NAMES[@]} " =~ " ${database} " ]]; then
     printf "$database ignored\n"
   else
     printf "Backing up $database\n"
